@@ -51,3 +51,6 @@ X= np.array([[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]])
 y = np.array([0,0,1,1,0,1,1,0])
 print(X)
 print(y)
+
+max_depth=1
+model = DecisionTreeClassifier(criterion='entropy',max_depth=max_depth)
