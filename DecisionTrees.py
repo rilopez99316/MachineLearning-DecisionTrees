@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as pl
+from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
 
 def entropy(S):
@@ -44,3 +46,8 @@ G = entropy_from_p1(0.25) - (2/4)*entropy_from_p1(0) - (2/4)*entropy_from_p1(0.5
 print(G)
 G = entropy_from_p1(0.25) - (2/4)*entropy_from_p1(0) - (2/4)*entropy_from_p1(0.5) 
 print(G)
+
+X= np.array([[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]])
+y = np.array([0,0,1,1,0,1,1,0])
+print(X)
+print(y)
