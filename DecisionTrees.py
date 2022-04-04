@@ -32,3 +32,10 @@ for p in p1:
 plt.plot(p1,ent)
 plt.xlabel('p(1)')
 plt.ylabel('entropy')
+
+G = entropy_from_p1(0.5) - (4/8)*entropy_from_p1(0.5) - (4/8)*entropy_from_p1(0.5) 
+print(G)
+G = entropy_from_p1(0.5) - (4/8)*entropy_from_p1(0.25) - (4/8)*entropy_from_p1(0.75)
+print(G) 
+G = entropy_from_p1(0.5) - (4/8)*entropy_from_p1(0.5) - (4/8)*entropy_from_p1(0.5) 
+print(G)
