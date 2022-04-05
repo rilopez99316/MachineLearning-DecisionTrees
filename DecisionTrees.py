@@ -89,3 +89,31 @@ print(f'Accuracy {best_accuracy:.4}')
 print("best_max_depth : ", best_max_depth)
 cm = confusion_matrix(y_test, pred)
 print(cm)
+
+#4: Find the worst performing decision tree in terms of accuracy
+#(use accuracy - evaluated on the test dataset) of depth at
+#least 5 and at most 20 (inclusive), display it, and print
+#the confusion matrix and accuracy on the test dataset. Use entropy.
+
+worst_model = DecisionTreeClassifier(criterion='entropy')
+worst_accuracy = 1
+worst_max_depth = 20
+
+max_depths = list(np.arange(5,21))+[None]
+for max_depth in max_depths:
+  model = DecisionTreeClassifier(criterion='entropy', max_depth = max_depth)
+  model = model.fit(x_train, y_train)
+  pred = model.predict(x_test)
+  accuracy = accuracy_score(y_test, pred)
+
+  if (worst_accuracy > accuracy):
+    worst_model = model
+    worst_accuracy = accuracy
+    worst_max_depth = max_depth
+
+  print('Max_depth = {};, accuracy = {:7.4f}'.format(max_depth,accuracy))
+
+print(f'worst accuracy {worst_accuracy:.4}')
+print("worst_max_depth : ", worst_max_depth)
+cm = confusion_matrix(y_test, pred)
+print(cm)
