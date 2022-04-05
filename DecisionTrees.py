@@ -32,29 +32,34 @@ fig, ax = plt.subplots(figsize=(8,8))
 tree.plot_tree(model, fontsize=10, ax=ax,class_names=class_names)
 fig.suptitle("Decision tree", fontsize=14)
 
-# Drop rows that have a NaN in them
-df = df.dropna()
+#use gini instead of entropy.
+model = DecisionTreeClassifier(criterion='gini')
+model = model.fit(x_train, y_train)
+pred = model.predict(x_test)
+accuracy = accuracy_score(y_test, pred)
+print(f'Accuracy {accuracy:.4}')
+cm = confusion_matrix(y_test, pred)
+print(cm)
 
-# Remove features we don't want
-# In this case, we remove non-float data as that will mess up the student's code
-df.pop('TimeStamp')
-df.pop('SourceIP')
-df.pop('DestinationIP')
+class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
+               'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
-# Make a copy here just for visualization purposes
-original_df = df.copy()
+fig, ax = plt.subplots(figsize=(8,8))
+tree.plot_tree(model, fontsize=10, ax=ax,class_names=class_names)
+fig.suptitle("Decision tree", fontsize=14)
 
-# Extract the labels from the dataframe and encode them to integers
-df_labels = df.pop('Label')
-label_encoder = LabelEncoder()
-df_labels = label_encoder.fit_transform(df_labels)
+#use gini instead of entropy.
+model = DecisionTreeClassifier(criterion='gini')
+model = model.fit(x_train, y_train)
+pred = model.predict(x_test)
+accuracy = accuracy_score(y_test, pred)
+print(f'Accuracy {accuracy:.4}')
+cm = confusion_matrix(y_test, pred)
+print(cm)
 
-# Prepare arrays to split into training and testing sets
-x_features = df.values
-y_labels = np.array(df_labels).T
+class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
+               'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
-# Split into training (70%) and testing (30%)
-x_train, x_test, y_train, y_test = train_test_split(x_features, y_labels, train_size=0.7, random_state=1738, shuffle=True)
-
-print(f"Training Set={x_train.shape}, Testing Set={x_test.shape}")
-
+fig, ax = plt.subplots(figsize=(8,8))
+tree.plot_tree(model, fontsize=10, ax=ax,class_names=class_names)
+fig.suptitle("Decision tree", fontsize=14)
