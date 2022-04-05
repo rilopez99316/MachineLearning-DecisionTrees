@@ -1,56 +1,31 @@
+import os
+import pandas as pd
+import tensorflow as tf
 import numpy as np
-import matplotlib.pyplot as pl
 from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
+from sklearn import tree
+from sklearn.metrics import accuracy_score, confusion_matrix
 
-def entropy(S):
-  p1 = np.sum(S)/len(S)
-  p0 = 1-p1
-  if p0==0 or p1==0:
-    return 0
-  return -p0*np.log2(p0) - p1*np.log2(p1)
+df = pd.read_csv("doh_dataset.zip", compression='gzip')
 
-S = [0,0,0,0,1,1,1,1]
-print(entropy(S))
-S = [0,0,0,0]
-print(entropy(S))
-S = [0,1,1,1,1]
-print(entropy(S))
-S = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-print(entropy(S))
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.fashion_mnist.load_data()
 
-def entropy_from_p1(p1):
-    p0 = 1-p1
-    if p0==0 or p1==0:
-        return 0
-    return -p0*np.log2(p0) - p1*np.log2(p1)
+x_train = np.float32(x_train/255).reshape(x_train.shape[0],-1)
+x_test = np.float32(x_test/255).reshape(x_test.shape[0],-1)
 
-p1 = np.linspace(0,1,100) # Generates 100 values from 0 to 1, unifirmly spaced
+#1: entropy
+model = DecisionTreeClassifier(criterion='entropy')
+model = model.fit(x_train, y_train)
+pred = model.predict(x_test)
+accuracy = accuracy_score(y_test, pred)
+print(f'Accuracy {accuracy:.4}')
+cm = confusion_matrix(y_test, pred)
+print(cm)
 
-ent = []
-for p in p1:
-  ent.append(entropy_from_p1(p))
+class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
+               'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
-plt.plot(p1,ent)
-plt.xlabel('p(1)')
-plt.ylabel('entropy')
-
-G = entropy_from_p1(0.5) - (4/8)*entropy_from_p1(0.5) - (4/8)*entropy_from_p1(0.5) 
-print(G)
-G = entropy_from_p1(0.5) - (4/8)*entropy_from_p1(0.25) - (4/8)*entropy_from_p1(0.75)
-print(G) 
-G = entropy_from_p1(0.5) - (4/8)*entropy_from_p1(0.5) - (4/8)*entropy_from_p1(0.5) 
-print(G)
-
-G = entropy_from_p1(0.25) - (2/4)*entropy_from_p1(0) - (2/4)*entropy_from_p1(0.5) 
-print(G)
-G = entropy_from_p1(0.25) - (2/4)*entropy_from_p1(0) - (2/4)*entropy_from_p1(0.5) 
-print(G)
-
-X= np.array([[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]])
-y = np.array([0,0,1,1,0,1,1,0])
-print(X)
-print(y)
-
-max_depth=1
-model = DecisionTreeClassifier(criterion='entropy',max_depth=max_depth)
+fig, ax = plt.subplots(figsize=(8,8))
+tree.plot_tree(model, fontsize=10, ax=ax,class_names=class_names)
+fig.suptitle("Decision tree", fontsize=14)
