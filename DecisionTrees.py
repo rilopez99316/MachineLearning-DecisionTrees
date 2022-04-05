@@ -117,3 +117,26 @@ print(f'worst accuracy {worst_accuracy:.4}')
 print("worst_max_depth : ", worst_max_depth)
 cm = confusion_matrix(y_test, pred)
 print(cm)
+
+#5: Repeat 3, but use gini instead of entropy.
+best_model = DecisionTreeClassifier(criterion='gini')
+best_accuracy = 0
+
+max_depths = list(np.arange(15,21))+[None]
+for max_depth in max_depths:
+  model = DecisionTreeClassifier(criterion='gini', max_depth = max_depth)
+  model = model.fit(x_train, y_train)
+  pred = model.predict(x_test)
+  accuracy = accuracy_score(y_test, pred)
+
+  if (best_accuracy < accuracy):
+    best_model = model
+    best_accuracy = accuracy
+    best_max_depth = max_depth
+
+  print('Max_depth = {};, accuracy = {:7.4f}'.format(max_depth,accuracy))
+
+print(f'Accuracy {best_accuracy:.4}')
+print("best_max_depth : ", best_max_depth)
+cm = confusion_matrix(y_test, pred)
+print(cm)
