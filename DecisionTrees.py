@@ -141,7 +141,7 @@ print("best_max_depth : ", best_max_depth)
 cm = confusion_matrix(y_test, pred)
 print(cm)
 
-#6
+#6 worst decision tree using gini
 worst_model = DecisionTreeClassifier(criterion='gini')
 worst_accuracy = 1
 worst_max_depth = 20
